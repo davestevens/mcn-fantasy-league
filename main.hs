@@ -19,13 +19,15 @@ getName (name,_,_) = name
 getPrice (_,price,_) = price
 getPoints (_,_,points) = points
 
-
 -- -- Return a new tuple with potential points
 calculate_potential_points rider completed in_round =
   (getName(rider), getPrice(rider), (getPoints(rider) `div` completed) * in_round)
 -- -- Map over passed Riders
 calculate_potential_points' riders completed in_round =
   map (\rider -> calculate_potential_points rider completed in_round)  riders
+
+-- -- Return all pairs of Riders
+get_pair riders = [ [x, y] | x <- riders, y <- riders, x /= y]
 
 main = do
   -- Calculate each Riders potential points (based on current points, races completed & races in round)
@@ -34,6 +36,10 @@ main = do
   let bsb = calculate_potential_points' BSB.riders BSB.races_completed BSB.races_in_round
 
   -- Pick 2 Riders from each class
+  let motogp_riders = get_pair motogp
+  let wsb_riders = get_pair wsb
+  let bsb_riders = get_pair bsb
+
   -- Iterate over each set of two riders from each class
   -- Filter to only valid team selections
   -- Order by potential points
