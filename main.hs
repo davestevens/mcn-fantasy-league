@@ -29,6 +29,10 @@ calculate_potential_points' riders completed in_round =
 -- -- Return all pairs of Riders
 get_pair riders = [ [x, y] | x <- riders, y <- riders, x /= y]
 
+-- -- Return total cost of Team
+klass_cost klass = sum $ map (\rider -> getPrice rider) klass
+team_cost team = sum $ map klass_cost team
+
 main = do
   -- Calculate each Riders potential points (based on current points, races completed & races in round)
   let motogp = calculate_potential_points' MotoGP.riders MotoGP.races_completed MotoGP.races_in_round
@@ -42,4 +46,6 @@ main = do
 
   -- Iterate over each set of two riders from each class
   -- Filter to only valid team selections
+  let possible_teams = [[x, y, z] | x <- motogp_riders, y <- wsb_riders, z <- bsb_riders, team_cost([x, y, z]) <= 10]
+
   -- Order by potential points
