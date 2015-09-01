@@ -1,0 +1,14 @@
+-- MCN Fantasy League Team Picker
+-- http://mcn.fantasyleague.com/
+-- Constraints:
+--  - 2 Riders from each class (MotoGP, WSB, BSB)
+--  - Total Team cost £10 million
+-- NB:
+--  - Each class has a different number of races per round
+
+-- Create lists of all Riders
+-- Calculate each Riders potential points (based on current points, races completed & races in round)
+-- Pick 2 Riders from each class
+-- Iterate over each set of two riders from each class
+-- Filter to only valid team selections
+-- Order by potential points
