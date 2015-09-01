@@ -30,7 +30,7 @@ calculate_potential_points' riders completed in_round =
 filter_riders riders = filter (\rider -> getPoints(rider) > 0) riders
 
 -- -- Return all pairs of Riders
-get_pair riders = [ [x, y] | x <- riders, y <- riders, x /= y]
+get_pair riders = [ [x, y] | x <- riders, y <- riders, elemIndex x riders < elemIndex y riders]
 
 -- -- Return total cost of Team
 team_cost team = sum $ map getPrice team
