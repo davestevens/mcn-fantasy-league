@@ -6,9 +6,34 @@
 -- NB:
 --  - Each class has a different number of races per round
 
+module Main where
+import System.IO
+
 -- Create lists of all Riders
--- Calculate each Riders potential points (based on current points, races completed & races in round)
--- Pick 2 Riders from each class
--- Iterate over each set of two riders from each class
--- Filter to only valid team selections
--- Order by potential points
+import MotoGP
+import WSB
+import BSB
+
+-- Extact data from Rider tuple
+getName (name,_,_) = name
+getPrice (_,price,_) = price
+getPoints (_,_,points) = points
+
+
+-- -- Return a new tuple with potential points
+calculate_potential_points rider completed in_round =
+  (getName(rider), getPrice(rider), (getPoints(rider) `div` completed) * in_round)
+-- -- Map over passed Riders
+calculate_potential_points' riders completed in_round =
+  map (\rider -> calculate_potential_points rider completed in_round)  riders
+
+main = do
+  -- Calculate each Riders potential points (based on current points, races completed & races in round)
+  let motogp = calculate_potential_points' MotoGP.riders MotoGP.races_completed MotoGP.races_in_round
+  let wsb = calculate_potential_points' WSB.riders WSB.races_completed WSB.races_in_round
+  let bsb = calculate_potential_points' BSB.riders BSB.races_completed BSB.races_in_round
+
+  -- Pick 2 Riders from each class
+  -- Iterate over each set of two riders from each class
+  -- Filter to only valid team selections
+  -- Order by potential points
