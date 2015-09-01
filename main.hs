@@ -8,6 +8,7 @@
 
 module Main where
 import System.IO
+import Data.List
 
 -- Create lists of all Riders
 import MotoGP
@@ -32,8 +33,15 @@ filter_riders riders = filter (\rider -> getPoints(rider) > 0) riders
 get_pair riders = [ [x, y] | x <- riders, y <- riders, x /= y]
 
 -- -- Return total cost of Team
-klass_cost klass = sum $ map (\rider -> getPrice rider) klass
-team_cost team = sum $ map klass_cost team
+team_cost team = sum $ map getPrice team
+
+-- -- Return total potential points for Team
+team_potential_points team = sum $ map getPoints team
+
+-- -- Print Team
+team_to_string team = intercalate ", " (map getName team)
+item_to_string item = intercalate ", " [show (fst item), team_to_string(snd item)]
+list_to_string list = intercalate "\n" (map item_to_string list)
 
 main = do
   -- Calculate each Riders potential points (based on current points, races completed & races in round)
@@ -51,7 +59,20 @@ main = do
 
   -- Iterate over each set of two riders from each class
   -- Filter to only valid team selections
-  let possible_teams = [[x, y, z] | x <- motogp_riders, y <- wsb_riders, z <- bsb_riders, team_cost([x, y, z]) <= 10]
-
   -- Sum teams potential points
+  let possible_teams = [
+        (team_potential_points(x ++ y ++ z), x ++ y ++ z)
+        |
+        x <- motogp_riders,
+        y <- wsb_riders,
+        z <- bsb_riders,
+        team_cost(x ++ y ++ z) <= 10
+        ]
+
   -- Order by potential points, display top 10
+  let ordered_possible_teams = reverse(sort possible_teams)
+  let top_ten = take 10 ordered_possible_teams
+
+  putStrLn $ "Number of possible Teams: " ++ show (length possible_teams)
+  putStrLn $ "Top Ten:"
+  putStrLn $ list_to_string(top_ten)
