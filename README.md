@@ -45,3 +45,25 @@ The top 10 teams for Game Round 5 (based on my current team) are
 8. V Rossi, A Iannone, J Torres, R Ramos, S Byrne, J Brookes - Predicted Points: 321
 9. J Lorenzo, A Iannone, M Baiocco, L Mercado, S Byrne, J Brookes - Predicted Points: 320
 10. J Lorenzo, A Iannone, J Torres, N Canepa, S Byrne, J Brookes - Predicted Points: 320
+
+## Running
+
+Interactive:
+```shell
+$ ghci
+GHCi, version 7.10.1: http://www.haskell.org/ghc/  :? for help
+Prelude> :l main
+[1 of 5] Compiling MyTeam           ( MyTeam.hs, interpreted )
+[2 of 5] Compiling BSB              ( BSB.hs, interpreted )
+[3 of 5] Compiling WSB              ( WSB.hs, interpreted )
+[4 of 5] Compiling MotoGP           ( MotoGP.hs, interpreted )
+[5 of 5] Compiling Main             ( main.hs, interpreted )
+Ok, modules loaded: Main, MotoGP, WSB, BSB, MyTeam.
+*Main> main
+```
+
+Compiling:
+```shell
+$ ghc main.hs
+$ ./main
+```
