@@ -14,6 +14,8 @@ import Data.List
 import MotoGP
 import WSB
 import BSB
+-- Create my team
+import MyTeam
 
 -- Extact data from Rider tuple
 getName (name,_,_) = name
@@ -38,6 +40,10 @@ team_cost team = sum $ map getPrice team
 -- -- Return total potential points for Team
 team_potential_points team = sum $ map getPoints team
 
+-- --
+intersections teams = length ((fst teams) `intersect` (snd teams))
+team_similarity team = sum $ map intersections (zip MyTeam.riders (map (\klass -> map getName klass) team))
+
 -- -- Print Team
 team_to_string team = intercalate ", " (map getName team)
 item_to_string item = intercalate ", " [show (fst item), team_to_string(snd item)]
@@ -60,13 +66,15 @@ main = do
   -- Iterate over each set of two riders from each class
   -- Filter to only valid team selections
   -- Sum teams potential points
+  -- Calculate the Team similarity
   let possible_teams = [
         (team_potential_points(x ++ y ++ z), x ++ y ++ z)
         |
         x <- motogp_riders,
         y <- wsb_riders,
         z <- bsb_riders,
-        team_cost(x ++ y ++ z) <= 10
+        team_cost(x ++ y ++ z) <= 10,
+        team_similarity([x, y, z]) >= 3
         ]
 
   -- Order by potential points, display top 10
